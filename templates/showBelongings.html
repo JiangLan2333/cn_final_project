@@ -1,0 +1,146 @@
+{% raw %}
+<div id="belongingControlPage">
+  <h1 class="contentHeader">查找物品</h1>
+  <table class="table table-hover table-bordered table-striped" style="width:100%;">
+    <tr>
+      <td>Tid</td>
+      <td>物品描述</td>
+      <td>是否可借</td>
+      <td>是否被盗</td>
+      <td>操作</td>
+    </tr>
+    <tr v-for="belonging in items.belongingItems">
+      <td><a href="javascript:void(0);" v-on:click="openEditModal(belonging.tid);"> {{belonging.tid}}</a></td>
+      <td>{{belonging.desc}}</td>
+      <td>{{belonging.status}}</td>
+      <td>{{belonging.safe}}</td>
+      <td><button class="btn btn-danger" v-on:click="deleteBelonging(belonging.tid);" type="button" name="button">删除</button> </td>
+    </tr>
+  </table>
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <table>
+            <tr v-for="(val,key,index) in belongingInfo">
+              <td>{{key}}</td>
+              <td><input type="text" @change="replaceInput($event);belongingInfo[key]=$event.target.value;" v-bind:disabled="key=='id'" v-bind:value="val"> </td>
+            </tr>
+          </table>
+          <!--学号、姓名、密码、院系-->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" v-on:click="submitBelongingEdit();">提交更改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endraw %}
+<script type="text/javascript">
+var belongingVM = new Vue({
+  el:"#belongingControlPage",
+  data:{
+    items:{
+      belongingItems:[],
+    },
+    belongingInfo:{
+      tid:"",
+      desc:"",
+      status:"",
+      safe:""
+    }
+  },
+  created:function(){
+    $.ajax({
+      type:"post",
+      url:"/showBelongings",
+      data:{},
+      dataType:"json",
+      success:function(tBelongingData){
+        Vue.set(belongingVM.items,"belongingItems",tBelongingData.belongingList);
+      }
+    });
+  },
+  methods:{
+    replaceInput:function(e){
+      var pattern = new RegExp("[`~!@#$^&*\"()=|{}':;\\-',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%+_]+","g");
+      e.target.value=e.target.value.replace(pattern,'').replace(/\\+/g,"");
+    },
+    openEditModal:function(tid){
+      showLoading();
+      $.ajax({
+        type:"post",
+        url:"/showPersonalInfo",
+        data:{"id":tid},
+        dataType:"json",
+        success:function(tBelongingInfo){
+          hideLoading();
+          $('#myModal').modal('show');
+          Vue.set(belongingVM.belongingInfo,"tid",tBelongingInfo.tid);
+          Vue.set(belongingVM.belongingInfo,"desc",tBelongingInfo.desc);
+          Vue.set(belongingVM.belongingInfo,"status",tBelongingInfo.status);
+          Vue.set(belongingVM.belongingInfo,"safe",tBelongingInfo.safe);
+        }
+      });
+    },
+    submitBelongingEdit:function(){
+      var pattern = new RegExp("[`~!@#$^&*\"()=|{}':;\\-',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%+_]+","g");
+      var tInfo=this.belongingInfo;
+      tInfo.id=tInfo.id.replace(/\D/g,'');
+      tInfo.name=tInfo.name.replace(pattern,'').replace(/\\+/g,"");
+      tInfo.department=tInfo.department.replace(/[\w\d]+/,'');
+      showLoading();
+      $.ajax({
+        type:"post",
+        url:"/changePersonalInfo",
+        data:this.belongingInfo,
+        success:function(msg){
+          hideLoading();
+          alert(msg);
+          $("#myModal").modal("hide");
+          //belongingVM.changePage(belongingVM.items.pageId);
+          $.ajax({
+            type:"post",
+            url:"/showStudent",
+            data:{},
+            dataType:"json",
+            success:function(tBelongingData){
+              Vue.set(belongingVM.items,"belongingItems",tBelongingData.belongingList);
+            }
+          });
+        },
+        error:function(){
+          alert("网络繁忙，请稍后再试");
+        }
+      })
+    },
+    deleteBelonging:function(tid){
+      showLoading();
+      $.ajax({
+        type:"post",
+        url:"/deleteBelonging",
+        data:{"tid":tid},
+        success:function(msg){
+          alert(msg);
+          //belongingVM.changePage(belongingVM.items.pageId);//删除数据后刷新当前页面
+          $.ajax({
+            type:"post",
+            url:"/showStudent",
+            data:{},
+            dataType:"json",
+            success:function(tBelongingData){
+              Vue.set(belongingVM.items,"belongingItems",tBelongingData.belongingList);
+            }
+          });
+        }
+      });
+    }
+  }
+});
+</script>

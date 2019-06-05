@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>207物品防盗系统</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/login.css">
+    <link rel="stylesheet" href="../static/css/paper.css">
+    <link rel="stylesheet" href="../static/css/loading.css">
+    <script type="text/javascript" src="../static/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../static/js/vue.min.js"></script>
+    <script type="text/javascript" src="../static/js/p5.min.js"></script>
+    <script type="text/javascript" src="../static/js/tryProcessing.js"></script>
+    <script type="text/javascript" src="../static/js/login.js"></script>
+    <script type="text/javascript" src="../static/js/jquery.easing.min.js"></script>
+    <script type="text/javascript" src="../static/js/md5.min.js"></script>
+  </head>
+  <body>
+    <div id="loadingBackground" style="position:fixed;width:100%;height:100%;background:rgba(255,255,255,0.5);z-index:999;">
+      <div id="loading" style="position:fixed;width:100%;height:100px;top:50%;transform:translate(0%,-50%);text-align:center;">
+        <div id="loadingBlock1"></div>
+        <div id="loadingBlock2"></div>
+        <div id="loadingBlock3"></div>
+        <div id="loadingBlock4"></div>
+        <div id="loadingBlock5"></div>
+        <div id="loadingBlock6"></div>
+        <div id="loadingBlock7"></div>
+      </div>
+    </div>
+    <div id="rightSide">
+      <div id="logout" class="align-items-center flex-row" onclick="logout();">
+        <img src="../static/img/logoutW.png">
+        <p>登出</p>
+      </div>
+      <form id="rightSideForm" method="POST">
+        <input id="id" type="text" class="form-control" name="id" required="required" pattern="[0-9]{12}" title="请输入数字组成的12位学号" autofocus="autofocus" autocomplete="on" placeholder="学号">
+        <input id="password" type="password" class="form-control" name="password" required="required" autocomplete="on" placeholder="密码">
+        <button id="submitBtn" type="submit" class="form-control btn btn-success" name="button">登陆</button>
+      </form>
+    </div>
+    <div id="leftSide">
+      <!--显示公告，删除其中的<script></script>-->
+      <p>207物品防盗系统</p>
+    </div>
+    <div id="paper"></div>
+  </body>
+</html>

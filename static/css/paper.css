@@ -1,0 +1,36 @@
+#paperContent h2{
+  font-size:48px;
+  border-bottom: 2px solid black;
+}
+#selectQuesContent,#judgeQuesContent,#fillQuesContent{
+  margin-bottom: 40px;
+}
+label{
+  display: block;
+  margin: 0px;
+  padding: 8px 0px;
+}
+label:hover{
+  background-color: #D1DBBD;
+}
+.selectQues,.fillQues,.judgeQues{
+  margin-bottom: 20px;
+}
+.paperBtnDiv{
+  width: 100%;
+  text-align: right;
+}
+#paperBtn{
+  width: 25%;
+}
+#timeCounter{
+  position: fixed;
+  left: 105%;
+  background-color: rgba(229,29,112,0.67);
+  color: #f4eedd;
+  text-align: center;
+  font-size: 40px;
+  padding: 0px 30px;
+  margin-top:20px;
+  border-radius: 10px;
+}

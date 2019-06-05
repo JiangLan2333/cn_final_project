@@ -1,0 +1,105 @@
+html{
+  height: 100%;
+  overflow-x: hidden;
+  margin: 0px;
+  padding: 0px;
+}
+body{
+  height:100%;
+  margin: 0px;
+  padding: 0px;
+}
+canvas{
+  position: fixed;
+  z-index: -1;
+}
+#rightSide{
+  background: rgba(19,34,41,0.66);
+  height: 100%;
+  text-align: center;
+  padding: 0px;
+  display: inline-block;
+  left: 61.8%;
+  width: 38.2%;
+  position: fixed;
+}
+#rightSide input{
+  margin-bottom: 20px;
+}
+#rightSide button{
+  width: 25%;
+  position: relative;
+}
+#rightSideForm{
+  text-align: right;
+  position: relative;
+  transform: translate(0%,-50%);
+  left: 15%;
+  width: 70%;
+  top: 50%;
+}
+#rightSideTable{
+  position: relative;
+  transform: translate(0%,-50%);
+  left: 15%;
+  width: 70%;
+  top: 50%;
+  border: 3px solid black;
+  font-size: 12px;
+}
+#rightSideTable tr{
+  border: 2px solid black;
+}
+#rightSideTable button{
+  font-size: 12px;
+  width: 100%;
+}
+#leftSide{
+  position: absolute;
+  width: 61.8%;
+  text-align: center;
+  height: 100%;
+  background-color: #fdfff7;
+  padding: 0px;
+}
+#leftSide p{
+  position: relative;
+  top: 50%;
+  transform: translate(0,-50%);
+  font-size: 40px;
+}
+#paper{
+  width: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%,0%);
+  background-color: #ffffff00;
+}
+#paperContent{
+  text-align: left;
+  padding: 10% 10%;
+  background-color: #fcfff5;
+  width: 100%;
+}
+
+#logout{
+  position: fixed;
+  width:80px;
+  cursor: pointer;
+  left: 100%;
+  top: 5%;
+  display: none;
+  transform: translate(-100%,0%);
+}
+
+#logout img{
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+}
+
+#logout p{
+  font-size: 10px;
+  color:#efefef;
+  display: inline-block;
+}

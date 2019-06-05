@@ -1,0 +1,84 @@
+body{
+  background-color: #eeeeee;
+}
+
+.navWraper{
+  position: fixed;
+  background-color: #dddddd;
+  border-radius: 15px;
+  width: 20%;
+  left: 5%;
+  top:20px;
+  box-shadow: 6px 6px 20px #dddddd;
+}
+
+.nav-item{
+  text-align: center;
+  background-color: #ffffff;
+  margin-top: 1px;
+}
+
+.nav-item:first-child{
+  border-radius: 15px 15px 0px 0px;
+  margin: 0px;
+}
+
+.nav-item:last-child{
+  border-radius: 0px 0px 15px 15px;
+}
+
+.active{
+  position: relative;
+  background-color: #007bff;
+  box-shadow: 1px 1px 2px #aaaaaa;
+}
+
+.active a{
+  color:#ffffff;
+}
+
+.fileUploadWraper{
+  margin-top: 20px;
+}
+
+.fileUploadBtn{
+  float: right;
+}
+
+.contentWraper{
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 15px 15px 15px 15px;
+  box-shadow: 6px 6px 20px #dddddd;
+  left: 30%;
+  top:20px;
+  height:100%;
+  width: 65%;
+  padding: 5%;
+}
+
+.contentHeader{
+  display: inline-block;
+}
+
+.searchWrap{
+  float: right;
+}
+
+.searchText{
+  border-radius: 10px 10px 10px 10px;
+}
+
+.changePageInput{
+  width: 50%;
+}
+
+.changePageInputWraper{
+  width: 100px;
+  height:40px;
+  padding-top:5px;
+}
+
+.btn-success{
+  float: right;
+}
