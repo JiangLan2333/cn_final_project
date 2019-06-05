@@ -24,10 +24,10 @@ function logout(){
 
 function loadStudentControlPage(){
   showLoading();
-  $(".contentWraper").load("/controlStudent",hideLoading);
+  $(".contentWraper").load("/showStudent",hideLoading);
 }
 
-function loadBelongingControlPage(){
+function loadShowBelongingPage(){
   showLoading();
   $(".contentWraper").load("/showBelongings",hideLoading);
 }

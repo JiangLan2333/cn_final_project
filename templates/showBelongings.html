@@ -61,9 +61,9 @@ var belongingVM = new Vue({
       type:"post",
       url:"/showBelongings",
       data:{},
-      dataType:"json",
-      success:function(tBelongingData){
-        Vue.set(belongingVM.items,"belongingItems",tBelongingData.belongingList);
+      success:function(data){
+        console.log(data)
+        Vue.set(belongingVM.items,"belongingItems",data.belongingList);
       }
     });
   },
@@ -76,9 +76,9 @@ var belongingVM = new Vue({
       showLoading();
       $.ajax({
         type:"post",
-        url:"/showPersonalInfo",
-        data:{"id":tid},
-        dataType:"json",
+        url:"/showBelongingInfo",
+        data:JSON.stringify({"id":tid}),
+          contentType: "application/json",
         success:function(tBelongingInfo){
           hideLoading();
           $('#myModal').modal('show');

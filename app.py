@@ -141,7 +141,23 @@ def controlBelongings():
 @app.route('/showBelongings', methods=['POST', 'GET'])
 @login_required
 def showBelongings():
-    return render_template('showBelongings.html')
+    # 读取数据库 返回[item,..]
+    if request.method == 'POST':
+        uid = current_user.uid
+        books = db.session.query(Belongings).filter_by(uid=uid).all()
+        belongingList = []
+        for item in books:
+            obj = {'tid': item.tid, 'desc': item.b_desc, 'status': item.b_status, 'safe': item.safe}
+            belongingList.append(obj)
+        return jsonify({'belongingList': belongingList})
+    if request.method == 'GET':
+        return render_template('showBelongings.html')
+
+@app.route('/showBelongingInfo', methods=['POST'])
+def showBelongingInfo():
+    tid = request.json['id']
+    book = db.session.query(Belongings).filter_by(tid=tid).first()
+    return jsonify({'tid': book.tid, 'desc': book.b_desc, 'status': book.b_status, 'safe': book.safe})
 
 @app.route('/uploadBelongings', methods=['POST', 'GET'])
 @login_required
