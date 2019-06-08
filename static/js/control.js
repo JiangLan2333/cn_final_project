@@ -32,7 +32,7 @@ function loadShowBelongingPage(){
   $(".contentWraper").load("/showBelongings",hideLoading);
 }
 
-function loadBelongingUploadPage(){
+function loadTagCheckPage(){
   showLoading();
-  $(".contentWraper").load("/uploadBelongings",hideLoading);
+  $(".contentWraper").load("/checkTag",hideLoading);
 }

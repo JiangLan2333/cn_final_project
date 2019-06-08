@@ -11,12 +11,6 @@ import time as time
 app = Flask(__name__)
 app.config.update(
     DEBUG = True,
-    MAIL_SERVER='smtp.qq.com',
-    MAIL_PROT=465,
-    MAIL_USE_SSL = True,
-    MAIL_USERNAME = '2731747210@qq.com',
-    MAIL_PASSWORD = 'qkaimaefwlvpdhbi',
-    MAIL_DEBUG = True,
     SECRET_KEY = 'Thisissupposedtobesecret!',
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://dong:jia67020200@140.143.10.91:3306/belongings207'
 )
@@ -52,7 +46,7 @@ class Belongings(db.Model):
     __tablename__ = 'belongings'
     tid = db.Column(db.String(40), primary_key=True)
     b_desc = db.Column(db.String(100))
-    b_status =  db.Column(db.Integer)
+    b_status = db.Column(db.Integer)
     uid = db.Column(db.String(40), db.ForeignKey('user.uid'))
     safe = db.Column(db.Boolean)
 
@@ -137,6 +131,14 @@ def controlStudent():
 def controlBelongings():
     return render_template('controlBelonging.html')
 
+@app.route('/deleteBelonging', methods=['POST'])
+@login_required
+def deleteBelonging():
+    tid = request.json['tid']
+    book = db.session.query(Belongings).filter_by(tid=tid).first()
+    db.session.delete(book)
+    db.session.commit()
+    return '删除成功！'
 
 @app.route('/showBelongings', methods=['POST', 'GET'])
 @login_required
@@ -147,7 +149,15 @@ def showBelongings():
         books = db.session.query(Belongings).filter_by(uid=uid).all()
         belongingList = []
         for item in books:
-            obj = {'tid': item.tid, 'desc': item.b_desc, 'status': item.b_status, 'safe': item.safe}
+            if item.b_status == 1:
+                status = "是"
+            elif item.b_status == 0:
+                status = "否"
+            if item.safe == 0:
+                safe = "是"
+            elif item.safe == 1:
+                safe = "否"
+            obj = {'tid': item.tid, 'desc': item.b_desc, 'status': status, 'safe': safe}
             belongingList.append(obj)
         return jsonify({'belongingList': belongingList})
     if request.method == 'GET':
@@ -159,10 +169,14 @@ def showBelongingInfo():
     book = db.session.query(Belongings).filter_by(tid=tid).first()
     return jsonify({'tid': book.tid, 'desc': book.b_desc, 'status': book.b_status, 'safe': book.safe})
 
-@app.route('/uploadBelongings', methods=['POST', 'GET'])
+@app.route('/checkTag', methods=['POST', 'GET'])
 @login_required
+def checkTag():
+    return render_template('checkTag.html')
+
+@app.route('/uploadBelongings')
 def uploadBelongings():
-    return render_template('uploadBeloings.html')
+    return render_template('uploadBelonging.html')
 
 if __name__ == '__main__':
     app.jinja_env.auto_reload = True

@@ -1,0 +1,114 @@
+{% raw %}
+<div id="tagControlPage">
+  <h1 class="contentHeader">添加物品</h1>
+  <table class="table table-hover table-bordered table-striped" style="width:100%;">
+    <tr>
+      <td>标签名称</td>
+      <td>选择标签</td>
+    </tr>
+    <tr v-for="tag in items.tagItems">
+      <td><a href="javascript:void(0);" v-on:click="openEditModal(tag.tid);"> {{tag.tid}}</a></td>
+    </tr>
+  </table>
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <table>
+            <tr v-for="(val,key,index) in tagInfo">
+              <td>{{key}}</td>
+              <td><input type="text" @change="replaceInput($event);tagInfo[key]=$event.target.value;" v-bind:disabled="key=='tid'" v-bind:value="val"> </td>
+            </tr>
+          </table>
+          <!--学号、姓名、密码、院系-->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" v-on:click="submitTagEdit();">提交更改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endraw %}
+<script type="text/javascript">
+var tagVM = new Vue({
+  el:"#tagControlPage",
+  data:{
+    items:{
+      tagItems:[],
+    },
+    tagInfo:{
+      tid:"",
+      uid:"",
+      desc:"",
+      status:""
+    },
+    timer:''
+  },
+  created:function(){
+    $.ajax({
+      type:"post",
+      url:"/showExam",
+      data:{},
+      dataType:"json",
+      success:function(tTagData){
+        Vue.set(tagVM.items,"tagItems",tTagData.tagList);
+      }
+    });
+  },
+  methods:{
+    refresh:function(){
+      $.ajax({
+        type:"post",
+        url:"/showExam",
+        data:{},
+        dataType:"json",
+        success:function(tTagData){
+          Vue.set(tagVM.items,"tagItems",tTagData.tagList);
+        }
+      });
+    },
+    replaceInput:function(e){
+      var pattern = new RegExp("[`~!@#$^&*\\\"()=|{}:;\\-,\\[\\].<>/?%+_]+","g");
+      e.target.value=e.target.value.replace(pattern,'').replace(/\\+/g,"");
+    },
+    openEditModal:function(tid){
+      $('#myModal').modal('show');
+    },
+    submitTagEdit:function(){
+      var pattern = new RegExp("[`~!@#$^&*\\\"()=|{};,\\[\\].<>/?！@#￥……&*（）——|{}【】‘；：”“'。，、？%+_]+","g");
+      var timePattern = new RegExp("\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d","g");
+      var tInfo=Object.assign({},this.tagInfo);
+      tInfo.tid=tInfo.tid.replace(pattern,'').replace(/\\+/g,"");
+      tInfo.uid=tInfo.uid.replace(/\D/g,"");
+      tInfo.desc=tInfo.desc.replace(/\D/g,"");
+      tInfo.status=tInfo.status.replace(/\D/g,"");
+      showLoading();
+      $.ajax({
+        type:"post",
+        url:"/changetagInfo",
+        data:JSON.stringify({'tid': this.tagInfo}),
+        success:function(msg){
+          alert(msg);
+          $("#myModal").modal("hide");
+        },
+        error:function(){
+          alert("网络拥堵，请稍后重试！");
+          hideLoading();
+        }
+      })
+    }
+  },
+  mounted(){
+    this.timer = setInterval(this.refresh,5000);
+  },
+  beforeDestroy(){
+    clearInterval(this.timer);
+  }
+});
+</script>

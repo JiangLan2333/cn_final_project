@@ -125,15 +125,16 @@ var belongingVM = new Vue({
       $.ajax({
         type:"post",
         url:"/deleteBelonging",
-        data:{"tid":tid},
+        data:JSON.stringify({"tid":tid}),
+          contentType: "application/json",
         success:function(msg){
           alert(msg);
           //belongingVM.changePage(belongingVM.items.pageId);//删除数据后刷新当前页面
           $.ajax({
             type:"post",
-            url:"/showStudent",
+            url:"/showBelongings",
             data:{},
-            dataType:"json",
+            contentType: "application/json",
             success:function(tBelongingData){
               Vue.set(belongingVM.items,"belongingItems",tBelongingData.belongingList);
             }
