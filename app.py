@@ -107,13 +107,16 @@ def signin():
 
 @app.route('/changeStatus', methods=['POST'])
 def changeStatus():
+    print(request.json)
     cur_status = request.json['status']
-    uid = request.json['uid']
     tid = request.json['tid']
-    n_status = 1 - int(cur_status)
-    book = db.session.query(Belongings).filter_by(uid=uid, tid=tid).first()
-    book.b_status = n_status
+    n_status = int(cur_status)
+    print("cur_status: ", cur_status, "n_status: ", n_status)
+    book = db.session.query(Belongings).filter_by(tid=tid).first()
+    book.b_status = str(n_status)
+    db.session.add(book)
     db.session.commit()
+    return "修改成功"
 
 @app.route('/logout', methods=['POST', 'GET'])
 @login_required

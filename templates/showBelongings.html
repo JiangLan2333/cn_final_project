@@ -92,22 +92,24 @@ var belongingVM = new Vue({
     submitBelongingEdit:function(){
       var pattern = new RegExp("[`~!@#$^&*\"()=|{}':;\\-',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%+_]+","g");
       var tInfo=this.belongingInfo;
-      tInfo.id=tInfo.id.replace(/\D/g,'');
-      tInfo.name=tInfo.name.replace(pattern,'').replace(/\\+/g,"");
-      tInfo.department=tInfo.department.replace(/[\w\d]+/,'');
+      tInfo.tid=tInfo.tid;
+      tInfo.desc=tInfo.desc.replace(pattern,'').replace(/\\+/g,"");
+      tInfo.status=tInfo.status;
+      tInfo.safe=tInfo.safe;
       showLoading();
+      console.log(this.belongingInfo);
       $.ajax({
         type:"post",
-        url:"/changePersonalInfo",
-        data:this.belongingInfo,
+        url:"/changeStatus",
+          contentType: "application/json",
+        data:JSON.stringify({"status": this.belongingInfo.status, "tid": this.belongingInfo.tid}),
         success:function(msg){
           hideLoading();
-          alert(msg);
           $("#myModal").modal("hide");
           //belongingVM.changePage(belongingVM.items.pageId);
           $.ajax({
             type:"post",
-            url:"/showStudent",
+            url:"/showBelongings",
             data:{},
             dataType:"json",
             success:function(tBelongingData){
